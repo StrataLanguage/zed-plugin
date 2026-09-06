@@ -1,0 +1,201 @@
+================================================================================
+Imports and globals
+================================================================================
+
+import ../common;
+import mode_common;
+
+PLAYER player;
+bool had_headbob = false;
+
+---
+
+(source_file
+  (import_statement
+    path: (import_path
+      (identifier)))
+  (import_statement
+    path: (import_path
+      (identifier)))
+  (variable_declaration
+    type: (type
+      (identifier))
+    name: (identifier))
+  (variable_declaration
+    type: (type
+      (primitive_type))
+    name: (identifier)
+    value: (expression
+      (boolean))))
+
+================================================================================
+Extern function with varargs
+================================================================================
+
+extern int printf(string fmt, ...);
+
+---
+
+(source_file
+  (function_definition
+    return_type: (type
+      (primitive_type))
+    name: (identifier)
+    parameters: (parameter_list
+      (parameter
+        type: (type
+          (primitive_type))
+        name: (identifier)))))
+
+================================================================================
+Struct alias, handle, const, enum
+================================================================================
+
+struct OBJECTID = uint;
+handle OBJECT;
+const uint OBJ_TAG_BLOCKOUT = (1 << 0);
+enum FACE_DIRECTION
+{
+	X = 1,
+	Y = 2,
+	Z = 3,
+}
+
+---
+
+(source_file
+  (struct_declaration
+    name: (identifier)
+    alias: (type
+      (primitive_type)))
+  (handle_declaration
+    name: (identifier))
+  (const_declaration
+    type: (type
+      (primitive_type))
+    name: (identifier)
+    value: (expression
+      (parenthesized_expression
+        (expression
+          (binary_expression
+            left: (expression
+              (number))
+            right: (expression
+              (number)))))))
+  (enum_declaration
+    name: (identifier)
+    (enum_variant
+      name: (identifier)
+      value: (expression
+        (number)))
+    (enum_variant
+      name: (identifier)
+      value: (expression
+        (number)))
+    (enum_variant
+      name: (identifier)
+      value: (expression
+        (number)))))
+
+================================================================================
+Impl block with property
+================================================================================
+
+impl OBJECT
+{
+	extern void move_to(OBJECT obj, float3 position);
+	property float3 position {
+		get = OBJECT_get_position;
+	}
+}
+
+---
+
+(source_file
+  (impl_block
+    type: (identifier)
+    (function_definition
+      return_type: (type
+        (primitive_type))
+      name: (identifier)
+      parameters: (parameter_list
+        (parameter
+          type: (type
+            (identifier))
+          name: (identifier))
+        (parameter
+          type: (type
+            (primitive_type))
+          name: (identifier))))
+    (property_declaration
+      type: (type
+        (primitive_type))
+      name: (identifier)
+      (property_accessor
+        value: (expression
+          (identifier))))))
+
+================================================================================
+Function with attribute, control flow, expressions
+================================================================================
+
+@private
+FACE_DIRECTION get_face_mask()
+{
+	float3 abs_face = float3_abs(selected_face);
+	if (abs_face.x > 0.01) {
+		return FACE_DIRECTION.X;
+	}
+	quantize_index++;
+	return FACE_DIRECTION.Z;
+}
+
+---
+
+(source_file
+  (function_definition
+    (attribute
+      name: (identifier))
+    return_type: (type
+      (identifier))
+    name: (identifier)
+    parameters: (parameter_list)
+    body: (block
+      (variable_declaration
+        type: (type
+          (primitive_type))
+        name: (identifier)
+        value: (expression
+          (call_expression
+            function: (identifier)
+            arguments: (argument_list
+              (expression
+                (identifier))))))
+      (if_statement
+        condition: (expression
+          (binary_expression
+            left: (expression
+              (member_expression
+                object: (expression
+                  (identifier))
+                field: (identifier)))
+            right: (expression
+              (number))))
+        consequence: (block
+          (return_statement
+            value: (expression
+              (member_expression
+                object: (expression
+                  (identifier))
+                field: (identifier))))))
+      (expression_statement
+        value: (expression
+          (update_expression
+            argument: (expression
+              (identifier)))))
+      (return_statement
+        value: (expression
+          (member_expression
+            object: (expression
+              (identifier))
+            field: (identifier)))))))

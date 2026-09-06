@@ -1,0 +1,33 @@
+{
+  "name": "tree-sitter-strata",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for the Strata language",
+  "repository": "https://github.com/example/strata-zed",
+  "license": "MIT",
+  "author": {
+    "name": "Strata"
+  },
+  "keywords": [
+    "incremental",
+    "parsing",
+    "tree-sitter",
+    "strata"
+  ],
+  "files": [
+    "grammar.js",
+    "tree-sitter.json",
+    "queries/*",
+    "src/**"
+  ],
+  "devDependencies": {
+    "tree-sitter-cli": "^0.26.0"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.strata",
+      "file-types": [
+        "strata"
+      ]
+    }
+  ]
+}

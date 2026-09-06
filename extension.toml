@@ -1,0 +1,20 @@
+id = "strata"
+name = "Strata"
+description = "Strata language support: syntax highlighting, brackets, indentation, and outline."
+version = "0.1.0"
+schema_version = 1
+authors = ["Strata Contributors"]
+repository = "https://github.com/example/strata-zed"
+
+# NOTE: The grammar lives in this same repository under
+# `grammars/tree-sitter-strata` (see `path` below).
+# After pushing this repo to GitHub, replace `repository` with the real URL
+# and `rev` with a commit SHA that contains the grammar.
+# For local iteration without pushing, temporarily use:
+#   repository = "file:///ABSOLUTE/PATH/TO/strata-zed"
+#   rev = "<local commit SHA>"
+#   path = "grammars/tree-sitter-strata"
+[grammars.strata]
+repository = "https://github.com/example/strata-zed"
+rev = "0000000000000000000000000000000000000000"
+path = "grammars/tree-sitter-strata"

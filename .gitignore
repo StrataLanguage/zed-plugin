@@ -1,0 +1,14 @@
+# Zed build outputs (compiled grammar clones / wasm)
+# NOTE: `grammars/strata` is the directory Zed creates when checking out +
+# compiling the grammar. Do NOT ignore `grammars/tree-sitter-strata`,
+# which is the vendored grammar source.
+/grammars/strata/
+*.wasm
+/extension.wasm
+
+# Rust extension build
+/target/
+
+# tree-sitter / node
+node_modules/
+build/
