@@ -1,10 +1,10 @@
 id = "strata"
 name = "Strata"
-description = "Strata language support: syntax highlighting, brackets, indentation, and outline."
+description = "Strata language support"
 version = "0.1.0"
 schema_version = 1
 authors = ["Strata Contributors"]
-repository = "https://github.com/example/strata-zed"
+repository = "https://github.com/StrataLanguage/zed-plugin"
 
 # NOTE: The grammar lives in this same repository under
 # `grammars/tree-sitter-strata` (see `path` below).
@@ -15,6 +15,6 @@ repository = "https://github.com/example/strata-zed"
 #   rev = "<local commit SHA>"
 #   path = "grammars/tree-sitter-strata"
 [grammars.strata]
-repository = "https://github.com/example/strata-zed"
-rev = "0000000000000000000000000000000000000000"
+repository = "https://github.com/StrataLanguage/zed-plugin"
+rev = "4a1139caee05656f584ff1543cf1f3b1696abf1b"
 path = "grammars/tree-sitter-strata"
