@@ -1,7 +1,7 @@
 id = "strata"
 name = "Strata"
 description = "Strata language support"
-version = "0.1.0"
+version = "0.1.1"
 schema_version = 1
 authors = ["Strata Contributors"]
 repository = "https://github.com/StrataLanguage/zed-plugin"
@@ -16,5 +16,5 @@ repository = "https://github.com/StrataLanguage/zed-plugin"
 #   path = "grammars/tree-sitter-strata"
 [grammars.strata]
 repository = "https://github.com/StrataLanguage/zed-plugin"
-rev = "4a1139caee05656f584ff1543cf1f3b1696abf1b"
+rev = "e85e714aeba11cb5d36b99ebd34356ab40320005"
 path = "grammars/tree-sitter-strata"
