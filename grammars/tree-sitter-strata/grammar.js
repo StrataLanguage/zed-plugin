@@ -34,6 +34,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.array_type, $.expression],
+    [$.generic_type, $.expression],
   ],
 
   rules: {
@@ -82,7 +83,9 @@ module.exports = grammar({
     // ---------- types ----------
     type: $ => choice(
       $.primitive_type,
+      $.pointer_type,
       $.array_type,
+      $.generic_type,
       $.identifier,
     ),
 
@@ -92,18 +95,45 @@ module.exports = grammar({
       'bool',
       'int',
       'uint',
+      'byte',
       'float',
       'float2',
       'float3',
       'float4',
+      // `type` is a built-in meta-type, distinct from user-defined types.
+      'type',
     )),
 
+    pointer_type: $ => seq(
+      '*',
+      field('base', $.type),
+    ),
+
     array_type: $ => seq(
-      field('base', choice($.primitive_type, $.identifier)),
+      field('base', choice($.primitive_type, $.generic_type, $.identifier)),
       '[',
       field('size', choice($.number, $.identifier)),
       ']',
     ),
+
+    generic_type: $ => seq(
+      field('name', $.identifier),
+      field('arguments', $.type_argument_list),
+    ),
+
+    type_argument_list: $ => seq(
+      '<',
+      commaSep1($.type),
+      '>',
+    ),
+
+    type_parameter_list: $ => seq(
+      '<',
+      commaSep1($.type_parameter),
+      '>',
+    ),
+
+    type_parameter: $ => field('name', $.identifier),
 
     // ---------- functions ----------
     function_definition: $ => seq(
@@ -111,6 +141,7 @@ module.exports = grammar({
       optional('extern'),
       field('return_type', $.type),
       field('name', $.identifier),
+      optional(field('type_parameters', $.type_parameter_list)),
       field('parameters', $.parameter_list),
       choice(
         ';',
@@ -221,6 +252,7 @@ module.exports = grammar({
       repeat($.attribute),
       'struct',
       field('name', $.identifier),
+      optional(field('type_parameters', $.type_parameter_list)),
       choice(
         seq('=', field('alias', $.type), ';'),
         seq(
@@ -309,7 +341,9 @@ module.exports = grammar({
       $.identifier,
       $.number,
       $.string,
+      $.character,
       $.boolean,
+      $.null_literal,
     ),
 
     assignment_expression: $ => prec.right(PREC.ASSIGN, seq(
@@ -407,12 +441,25 @@ module.exports = grammar({
 
     _string_content: _ => token.immediate(prec(1, /[^"\\]+/)),
 
+    character: $ => seq(
+      "'",
+      repeat1(choice(
+        $._character_content,
+        $.escape_sequence,
+      )),
+      "'",
+    ),
+
+    _character_content: _ => token.immediate(prec(1, /[^'\\]+/)),
+
     escape_sequence: _ => token.immediate(seq(
       '\\',
       /./,
     )),
 
     boolean: _ => choice('true', 'false'),
+
+    null_literal: _ => 'null',
 
     comment: _ => token(choice(
       seq('//', /.*/),

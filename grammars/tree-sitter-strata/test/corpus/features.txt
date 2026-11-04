@@ -1,0 +1,180 @@
+================================================================================
+Pointer types and null
+================================================================================
+
+*OBJECT ptr = null;
+*int value;
+
+---
+
+(source_file
+  (variable_declaration
+    type: (type
+      (pointer_type
+        base: (type
+          (identifier))))
+    name: (identifier)
+    value: (expression
+      (null_literal)))
+  (variable_declaration
+    type: (type
+      (pointer_type
+        base: (type
+          (primitive_type))))
+    name: (identifier)))
+
+================================================================================
+Character literals and escapes
+================================================================================
+
+byte quote = '\'';
+byte newline = '\n';
+byte letter = 'a';
+
+---
+
+(source_file
+  (variable_declaration
+    type: (type
+      (primitive_type))
+    name: (identifier)
+    value: (expression
+      (character
+        (escape_sequence))))
+  (variable_declaration
+    type: (type
+      (primitive_type))
+    name: (identifier)
+    value: (expression
+      (character
+        (escape_sequence))))
+  (variable_declaration
+    type: (type
+      (primitive_type))
+    name: (identifier)
+    value: (expression
+      (character))))
+
+================================================================================
+Generic structs and generic types
+================================================================================
+
+struct something<T> { }
+struct Pair<T, U>
+{
+	*T first;
+	U second;
+}
+struct Container<T> = Box<T>;
+Pair<int, float> pair;
+
+---
+
+(source_file
+  (struct_declaration
+    name: (identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter
+        name: (identifier))))
+  (struct_declaration
+    name: (identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter
+        name: (identifier))
+      (type_parameter
+        name: (identifier)))
+    (variable_declaration
+      type: (type
+        (pointer_type
+          base: (type
+            (identifier))))
+      name: (identifier))
+    (variable_declaration
+      type: (type
+        (identifier))
+      name: (identifier)))
+  (struct_declaration
+    name: (identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter
+        name: (identifier)))
+    alias: (type
+      (generic_type
+        name: (identifier)
+        arguments: (type_argument_list
+          (type
+            (identifier))))))
+  (variable_declaration
+    type: (type
+      (generic_type
+        name: (identifier)
+        arguments: (type_argument_list
+          (type
+            (primitive_type))
+          (type
+            (primitive_type)))))
+    name: (identifier)))
+
+================================================================================
+Generic functions
+================================================================================
+
+T identity<T>(T value)
+{
+	return value;
+}
+extern void consume<T, U>(T first, U second);
+
+---
+
+(source_file
+  (function_definition
+    return_type: (type
+      (identifier))
+    name: (identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter
+        name: (identifier)))
+    parameters: (parameter_list
+      (parameter
+        type: (type
+          (identifier))
+        name: (identifier)))
+    body: (block
+      (return_statement
+        value: (expression
+          (identifier)))))
+  (function_definition
+    return_type: (type
+      (primitive_type))
+    name: (identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter
+        name: (identifier))
+      (type_parameter
+        name: (identifier)))
+    parameters: (parameter_list
+      (parameter
+        type: (type
+          (identifier))
+        name: (identifier))
+      (parameter
+        type: (type
+          (identifier))
+        name: (identifier)))))
+
+================================================================================
+The `type` meta-type
+================================================================================
+
+type target = null;
+
+---
+
+(source_file
+  (variable_declaration
+    type: (type
+      (primitive_type))
+    name: (identifier)
+    value: (expression
+      (null_literal))))

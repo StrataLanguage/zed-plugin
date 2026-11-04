@@ -25,14 +25,22 @@
 ; ---------- literals ----------
 (number) @number
 (string) @string
+(character) @character
 (escape_sequence) @string.escape
 (boolean) @boolean
+(null_literal) @constant.builtin
 
 ; ---------- types ----------
 (primitive_type) @type.builtin
 
 (type
   (identifier) @type)
+
+(generic_type
+  name: (identifier) @type)
+
+(type_parameter
+  name: (identifier) @type)
 
 (array_type
   base: (identifier) @type)
