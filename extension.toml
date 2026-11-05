@@ -18,3 +18,9 @@ repository = "https://github.com/StrataLanguage/zed-plugin"
 repository = "https://github.com/StrataLanguage/zed-plugin"
 rev = "e85e714aeba11cb5d36b99ebd34356ab40320005"
 path = "grammars/tree-sitter-strata"
+
+# The server binary is `strata-lsp`, built from the stratac repository. The languages list must match the
+# `name` in languages/strata/config.toml.
+[language_servers.strata-lsp]
+name = "Strata LSP"
+languages = ["Strata"]

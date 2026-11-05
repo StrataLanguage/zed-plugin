@@ -34,7 +34,9 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.array_type, $.expression],
-    [$.generic_type, $.expression],
+    // `f < T` may be a comparison or the start of `f<T>(args)`; the dynamic precedence on the call decides.
+    [$.call_expression, $.expression],
+    [$.generic_type, $.call_expression, $.expression],
   ],
 
   rules: {
@@ -385,14 +387,30 @@ module.exports = grammar({
       seq(field('argument', $.expression), field('operator', choice('++', '--'))),
     )),
 
-    call_expression: $ => prec(PREC.CALL, seq(
-      field('function', choice(
-        $.member_expression,
-        $.identifier,
-        $.primitive_type,
+    // `f(args)` and `f<T, ...>(args)`. The explicit form only counts as a call when `(` follows the type
+    // arguments; otherwise `f < T` is a comparison, as in the compiler.
+    call_expression: $ => choice(
+      prec(PREC.CALL, seq(
+        field('function', choice(
+          $.member_expression,
+          $.identifier,
+          $.primitive_type,
+        )),
+        field('arguments', $.argument_list),
       )),
-      field('arguments', $.argument_list),
-    )),
+      prec.dynamic(1, seq(
+        field('function', $.identifier),
+        field('type_arguments', $.call_type_arguments),
+        field('arguments', $.argument_list),
+      )),
+    ),
+
+    // Type arguments in a call; `<>` is allowed for an empty parameter pack.
+    call_type_arguments: $ => seq(
+      '<',
+      optional(commaSep1($.type)),
+      '>',
+    ),
 
     argument_list: $ => seq(
       '(',
