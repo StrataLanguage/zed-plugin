@@ -373,7 +373,32 @@
             "named": true
           }
         ]
+      },
+      "type_arguments": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "call_type_arguments",
+            "named": true
+          }
+        ]
       }
+    }
+  },
+  {
+    "type": "call_type_arguments",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
     }
   },
   {

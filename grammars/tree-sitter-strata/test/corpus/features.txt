@@ -178,3 +178,82 @@ type target = null;
     name: (identifier)
     value: (expression
       (null_literal))))
+
+================================================================================
+Explicit type arguments in calls
+================================================================================
+
+int main()
+{
+    int a = f<int>(3);
+    int b = load<int>(a) - load<int>(c);
+    bool d = a < 4;
+    each<>();
+    return a;
+}
+
+---
+
+(source_file
+  (function_definition
+    (type
+      (primitive_type))
+    (identifier)
+    (parameter_list)
+    (block
+      (variable_declaration
+        (type
+          (primitive_type))
+        (identifier)
+        (expression
+          (call_expression
+            (identifier)
+            (call_type_arguments
+              (type
+                (primitive_type)))
+            (argument_list
+              (expression
+                (number))))))
+      (variable_declaration
+        (type
+          (primitive_type))
+        (identifier)
+        (expression
+          (binary_expression
+            (expression
+              (call_expression
+                (identifier)
+                (call_type_arguments
+                  (type
+                    (primitive_type)))
+                (argument_list
+                  (expression
+                    (identifier)))))
+            (expression
+              (call_expression
+                (identifier)
+                (call_type_arguments
+                  (type
+                    (primitive_type)))
+                (argument_list
+                  (expression
+                    (identifier))))))))
+      (variable_declaration
+        (type
+          (primitive_type))
+        (identifier)
+        (expression
+          (binary_expression
+            (expression
+              (identifier))
+            (expression
+              (number)))))
+      (expression_statement
+        (expression
+          (call_expression
+            (identifier)
+            (call_type_arguments)
+            (argument_list))))
+      (return_statement
+        (expression
+          (identifier))))))
